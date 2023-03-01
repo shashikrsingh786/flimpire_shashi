@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default */
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { CssBaseline } from '@mui/material';
@@ -16,10 +15,10 @@ const App = () => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Routes>
-          <Route path="/movie/:id" element={<MovieInformation />} />
-          <Route path="/actors/:id" element={<Actors />} />
-          <Route path="/" element={<Movies />} />
-          <Route path="/profile/:id" element={<Profile />} />
+          <Route exact path="/movie/:id" element={<MovieInformation />} />
+          <Route exact path="/actors/:id" element={<Actors />} />
+          <Route exact path="/" element={<Movies />} />
+          <Route exact path="/profile/:id" element={<Profile />} />
         </Routes>
       </main>
     </div>
