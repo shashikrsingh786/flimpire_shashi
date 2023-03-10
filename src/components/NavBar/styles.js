@@ -1,40 +1,37 @@
-/* eslint-disable no-unused-vars */
-import { Button, Drawer, IconButton, styled, Toolbar } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
-export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  height: '80px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginLeft: '240px',
-  [theme.breakpoints.down('sm')]: {
-    marginLeft: 0,
-    flexWrap: 'wrap',
+const drawerWidth = 240; // static width of the sidebar of 240px
+
+export default makeStyles((theme) => ({
+  toolbar: {
+    height: '80px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginLeft: drawerWidth, // 240px left for the sidebar
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+      flexWrap: 'wrap',
+    }, // affects only devices 'smaller' than small or small devices
   },
-}));
-
-export const IconBtn = styled(IconButton)(({ theme }) => ({
-  color: 'inherit',
-  outline: 'none',
-  marginRight: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    display: 'none',
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    }, // affects only devices 'bigger' than small
   },
-}));
-
-export const Nav = styled('nav')(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: {
-    width: '240px',
-    flexShrink: 0,
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
-}));
-
-export const DrawerPaper = styled(Drawer)(({ theme }) => ({
-  width: '240px',
-}));
-
-export const LinkBtn = styled(Button)(({ theme }) => ({
-  '&:hover': {
-    color: 'white !important',
-    textDecoration: 'none',
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  linkButton: {
+    '&:hover': {
+      color: 'white !important',
+      textDecoration: 'none',
+    },
   },
 }));

@@ -46,6 +46,6 @@ const genres = {
   popular,
   'top rated': topRated,
   upcoming,
-}
+};
 
 export default genres;

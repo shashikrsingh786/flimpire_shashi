@@ -1,27 +1,35 @@
-/* eslint-disable react/function-component-definition */
-import React from 'react';
+import React, { useRef } from 'react';
 import { CssBaseline } from '@mui/material';
-import { Routes, Route } from 'react-router-dom';
+import { Routes as Switch, Route } from 'react-router-dom';
+
+import { Actors, MovieInformation, Movies, Navbar, Profile } from '.';
+
+import useAlan from './Alan/Alan';
 import useStyles from './styles';
 
-import { Actors, Movies, MovieInformation, NavBar, Profile } from './index';
+function App() {
+  const classes = useStyles(); // useStyles.js hook
 
-const App = () => {
-  const classes = useStyles();
+  const alanBtnContainer = useRef();
+  useAlan();
+
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <NavBar />
-      <main className={classes.content}>
+      <Navbar />
+      <main className={classes.content}> { /* main div contains the main part of the application */ }
         <div className={classes.toolbar} />
-        <Routes>
-          <Route exact path="/movie/:id" element={<MovieInformation />} />
+        <Switch> { /* a <Switch> looks through its children <Route>s and renders the first one that matches the current URL */ }
+          <Route exact path="/movie/:id" element={<MovieInformation />} /> { /* notice: /:id <=> /<number> */ }
           <Route exact path="/actors/:id" element={<Actors />} />
-          <Route exact path="/" element={<Movies />} />
+          <Route exact path="/*" element={<Movies />} /> { /* notice: it's smart to use 'exact' */ }
+          <Route exact path="/approved" element={<Movies />} />
           <Route exact path="/profile/:id" element={<Profile />} />
-        </Routes>
+        </Switch>
       </main>
+      <div ref={alanBtnContainer} />
     </div>
   );
-};
+}
+
 export default App;

@@ -1,13 +1,18 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, CircularProgress, useMediaQuery, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { useGetMoviesQuery } from '../../services/TMDB';
-import { MovieList } from '..';
 
-// eslint-disable-next-line react/function-component-definition
-const Movies = () => {
-  const { data, error, isFetching } = useGetMoviesQuery();
+import { useGetMoviesQuery } from '../../services/TMDB';
+import { MovieList, Pagination, FeaturedMovie } from '..';
+
+function Movies() {
+  const [page, setPage] = useState(1);
+  const { genreIdOrCategoryName, searchQuery } = useSelector((state) => state.currentGenreOrCategory);
+  const { data, error, isFetching } = useGetMoviesQuery({ genreIdOrCategoryName, page, searchQuery }); // fetching data from an API
+
+  const lgDevice = useMediaQuery((theme) => theme.breakpoints.only('lg'));
+  const numberOfMoviesToShow = lgDevice ? 17 : 19; // notice: data?.results?.length === 20
+
   if (isFetching) {
     return (
       <Box display="flex" justifyContent="center">
@@ -15,7 +20,15 @@ const Movies = () => {
       </Box>
     );
   }
-  if (!data.results.length) {
+  if (error) {
+    return (
+      <Box display="flex" alignItems="center" mt="20px">
+        <Typography variant="h4">An error has occured.</Typography>
+      </Box>
+    );
+  }
+
+  if (!data?.results?.length) { // if a person searches for a movie...
     return (
       <Box display="flex" alignItems="center" mt="20px">
         <Typography variant="h4">
@@ -26,17 +39,13 @@ const Movies = () => {
       </Box>
     );
   }
-
-  if (error) {
-    return 'An error has occured.';
-  }
-  console.log(data);
-
   return (
-    <div>
-      <MovieList movies={data} />
-    </div>
+    <>
+      <FeaturedMovie movie={data?.results[0]} />
+      <MovieList movies={data} numberOfMovies={numberOfMoviesToShow} excludeFirst />
+      <Pagination currentPage={page} setPage={setPage} totalPages={data?.total_pages} />
+    </>
   );
-};
+}
 
 export default Movies;
